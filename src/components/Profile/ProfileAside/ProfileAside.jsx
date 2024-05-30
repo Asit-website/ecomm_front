@@ -7,7 +7,9 @@ export const ProfileAside = () => {
 
   const [email , setEmail] = useState("");
 
-
+   const submitHandler = (e) =>{
+     e.preventDefault();
+   }
   return (
     <>
       <div className='profile-aside'>
