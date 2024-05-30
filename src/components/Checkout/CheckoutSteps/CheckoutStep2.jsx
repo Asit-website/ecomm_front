@@ -33,7 +33,7 @@ export const CheckoutStep2 = ({  onPrev }) => {
      const token = localStorage.getItem("ecomm_userToken");
 
    try {
-     const response = await fetch("http://localhost:4000/api/v1/payment/capturePayment",
+     const response = await fetch("https://ecomm-backend-aopz.onrender.com/api/v1/payment/capturePayment",
        {
          method: "POST",
          headers: {
@@ -58,7 +58,7 @@ export const CheckoutStep2 = ({  onPrev }) => {
     name: "Asit Mandal",
     description: "product transaction",
     order_id: formattedResponse?.message?.id,
-    // callback_url: `http://localhost:4000/api/v1/payment/verifySignature/${token}`,
+    // callback_url: `https://ecomm-backend-aopz.onrender.com/api/v1/payment/verifySignature/${token}`,
     prefill: {
         name: "login user name",
         email: "loginEmail.com",

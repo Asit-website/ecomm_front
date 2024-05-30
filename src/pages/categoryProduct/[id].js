@@ -31,7 +31,7 @@ const CategoryProduct = () => {
         try{
 
             const response = await fetch(
-                `http://localhost:4000/api/v1/getProductsByCategoryId/${id}`,
+                `https://ecomm-backend-aopz.onrender.com/api/v1/getProductsByCategoryId/${id}`,
                 {
                   method: "GET",
                   headers: {
@@ -55,7 +55,7 @@ const CategoryProduct = () => {
       try{
 
         const response = await fetch(
-          `http://localhost:4000/api/v1/fetchAllSubCategoryOfCategory/${id}`,
+          `https://ecomm-backend-aopz.onrender.com/api/v1/fetchAllSubCategoryOfCategory/${id}`,
           {
             method: "GET",
             headers: {
@@ -88,7 +88,7 @@ const CategoryProduct = () => {
       try{
         
         const response = await fetch(
-          `http://localhost:4000/api/v1/subCategoryPageDetails/${id}`,
+          `https://ecomm-backend-aopz.onrender.com/api/v1/subCategoryPageDetails/${id}`,
           {
             method: "GET",
             headers: {

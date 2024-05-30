@@ -20,7 +20,7 @@ const [orderHistory , setOrderHistory] = useState([]);
 
     try{
 
-      const response = await fetch(`http://localhost:4000/api/v1/getOrderHistory`,
+      const response = await fetch(`https://ecomm-backend-aopz.onrender.com/api/v1/getOrderHistory`,
       {
         method: "GET",
         headers: {

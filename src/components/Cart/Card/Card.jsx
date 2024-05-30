@@ -19,7 +19,7 @@ export const Card = ({ cart, onChangeQuantity }) => {
 
     try{
 
-      const response = await fetch(`http://localhost:4000/api/v1/removeFromCart/${_id}`,
+      const response = await fetch(`https://ecomm-backend-aopz.onrender.com/api/v1/removeFromCart/${_id}`,
       {
         method: "POST",
         headers: {

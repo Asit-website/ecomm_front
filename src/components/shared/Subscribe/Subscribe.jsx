@@ -9,7 +9,7 @@ export const Subscribe = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:4000/api/v1/sendMail`,
+        `https://ecomm-backend-aopz.onrender.com/api/v1/sendMail`,
         {
           method: "POST",
           headers: {

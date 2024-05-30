@@ -9,7 +9,7 @@ export const Products = ({ products }) => {
 
     try {
       const response = await fetch(
-        `http://localhost:4000/api/v1/addToCart/${id}`,
+        `https://ecomm-backend-aopz.onrender.com/api/v1/addToCart/${id}`,
         {
           method: "POST",
           headers: {
@@ -38,7 +38,7 @@ export const Products = ({ products }) => {
 
   const handleAddToWishlist = async(id)=>{
     try {
-      const response = await fetch(`http://localhost:4000/api/v1/addToWishlist/${id}`,
+      const response = await fetch(`https://ecomm-backend-aopz.onrender.com/api/v1/addToWishlist/${id}`,
         {
           method: "POST",
           headers: {

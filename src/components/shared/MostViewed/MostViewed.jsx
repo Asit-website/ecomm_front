@@ -11,7 +11,7 @@ export const MostViewed = ({ additionalClass }) => {
   const fetchProducts = async () => {
     try {
       const response = await fetch(
-        "http://localhost:4000/api/v1/fetchAllProducts",
+        "https://ecomm-backend-aopz.onrender.com/api/v1/fetchAllProducts",
         {
           method: "GET",
           headers: {

@@ -11,7 +11,7 @@ export const CategoryProduct = () => {
 
     const fetchProductByCategory = async()=>{
         try{
-            const response = await fetch( `http://localhost:4000/api/v1/getProductsByCategoryId/${categoryId}`,
+            const response = await fetch( `https://ecomm-backend-aopz.onrender.com/api/v1/getProductsByCategoryId/${categoryId}`,
               {
                 method: "GET",
                 headers: {

@@ -12,7 +12,7 @@ export const Trending = () => {
   const fetchProducts = async () => {
 
     try {
-      const response = await fetch( `http://localhost:4000/api/v1/getProductsByCategoryId/${filterItem}`,
+      const response = await fetch( `https://ecomm-backend-aopz.onrender.com/api/v1/getProductsByCategoryId/${filterItem}`,
         {
           method: "GET",
           headers: {
@@ -37,7 +37,7 @@ export const Trending = () => {
   const fetchCategory = async()=>{
     try {
       const response = await fetch(
-        "http://localhost:4000/api/v1/showAllCategory",
+        "https://ecomm-backend-aopz.onrender.com/api/v1/showAllCategory",
         {
           method: "GET",
           headers: {

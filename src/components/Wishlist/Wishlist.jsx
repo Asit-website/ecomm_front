@@ -14,7 +14,7 @@ export const Wishlist = () => {
   let token = localStorage.getItem("ecomm_userToken");
   try {
     const response = await fetch(
-      "http://localhost:4000/api/v1/removeAllWislist",
+      "https://ecomm-backend-aopz.onrender.com/api/v1/removeAllWislist",
       {
         method: "DELETE",
         headers: {

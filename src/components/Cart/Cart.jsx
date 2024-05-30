@@ -25,7 +25,7 @@ export const Cart = () => {
 
     try{
 
-      const response = await fetch(`http://localhost:4000/api/v1/productQuantity/${id}`,
+      const response = await fetch(`https://ecomm-backend-aopz.onrender.com/api/v1/productQuantity/${id}`,
       {
         method: "POST",
         headers: {

@@ -22,7 +22,7 @@ export const Nav = ({ navItem }) => {
 
   const fetchAllCategory = async()=>{
     try{
-      const response = await fetch( "http://localhost:4000/api/v1/showAllCategory",
+      const response = await fetch( "https://ecomm-backend-aopz.onrender.com/api/v1/showAllCategory",
         {
           method: "GET",
           headers: {

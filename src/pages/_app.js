@@ -24,7 +24,7 @@ const fetchAllCartItem = async()=>{
     if(token){
   try {
     const response = await fetch(
-      "http://localhost:4000/api/v1/fetchAllCartItems",
+      "https://ecomm-backend-aopz.onrender.com/api/v1/fetchAllCartItems",
       {
         method: "GET",
         headers: {
@@ -56,7 +56,7 @@ const fetchAllWishlistItem = async()=>{
  if(token){
   try {
     const response = await fetch(
-      "http://localhost:4000/api/v1/fetchAllWishlistItem",
+      "https://ecomm-backend-aopz.onrender.com/api/v1/fetchAllWishlistItem",
       {
         method: "GET",
         headers: {
