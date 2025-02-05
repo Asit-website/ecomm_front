@@ -16,7 +16,38 @@ const MyApp = ({ Component, pageProps }) => {
 
   const [wishlist , setWishlist] = useState([]);
 
-
+  const clearCart = async () => {
+    if (token) {
+      try {
+        // Call the API to empty the cart
+        const response = await fetch(
+          "http://localhost:4000/api/v1/empty", // Replace with the correct endpoint
+          {
+            method: "DELETE", // Use DELETE to empty the cart
+            headers: {
+              "content-type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+  
+        const formattedResponse = await response.json();
+  
+        if (formattedResponse?.success) {
+          // If the cart is successfully emptied, update the state
+          setCart([]);
+          console.log("Cart successfully emptied!");
+        } else {
+          console.error("Failed to empty cart:", formattedResponse.message);
+        }
+      } catch (error) {
+        console.error("Error while emptying the cart:", error);
+      }
+    } else {
+      console.error("No token found. User is not logged in.");
+    }
+  };
+  
 const fetchAllCartItem = async()=>{
 
    let token = localStorage.getItem("ecomm_userToken");
@@ -80,6 +111,7 @@ else{
 
 }
 
+
 useEffect(()=>{
   if(localStorage.getItem("ecomm_userToken")){
   setToken(localStorage.getItem("ecomm_userToken"));
@@ -98,7 +130,7 @@ useEffect(()=>{
   return (
     <>
    
-    <CartContext.Provider value={{ cart, setCart, token , userDetails , setToken , setUserDetails , wishlist , fetchAllCartItem , fetchAllWishlistItem }}>
+    <CartContext.Provider value={{ cart, clearCart, setCart, token , userDetails , setToken , setUserDetails , wishlist , fetchAllCartItem , fetchAllWishlistItem }}>
       <Component {...pageProps} />
     </CartContext.Provider>
    
