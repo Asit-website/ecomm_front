@@ -6,7 +6,7 @@ export const CheckoutStep2 = ({  onPrev, onNext }) => {
 
   const [payment, setPayment] = useState('credit-card');
 
-  const { cart, clearCart } = useContext(CartContext)
+  const { cart } = useContext(CartContext)
 
 
   useEffect(() => {
@@ -71,7 +71,7 @@ export const CheckoutStep2 = ({  onPrev, onNext }) => {
         "color": "#121212"
     }, handler: function (response) {
       console.log("Payment successful:", response);
-      clearCart();
+      console.log("Hi line no 75")
       onNext();
     },modal: {
       ondismiss: function () {
