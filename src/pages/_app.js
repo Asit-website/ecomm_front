@@ -16,7 +16,7 @@ const MyApp = ({ Component, pageProps }) => {
 
   const [wishlist , setWishlist] = useState([]);
 
-
+ 
 const fetchAllCartItem = async()=>{
 
    let token = localStorage.getItem("ecomm_userToken");
@@ -79,6 +79,7 @@ else{
 }
 
 }
+
 
 useEffect(()=>{
   if(localStorage.getItem("ecomm_userToken")){

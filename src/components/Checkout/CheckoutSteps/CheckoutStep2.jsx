@@ -2,11 +2,11 @@ import { CartContext } from 'pages/_app';
 import { useContext, useEffect, useState } from 'react';
 
 
-export const CheckoutStep2 = ({  onPrev }) => {
+export const CheckoutStep2 = ({  onPrev, onNext }) => {
 
   const [payment, setPayment] = useState('credit-card');
 
-  const {cart} = useContext(CartContext);
+  const { cart } = useContext(CartContext)
 
 
   useEffect(() => {
@@ -69,12 +69,25 @@ export const CheckoutStep2 = ({  onPrev }) => {
     },
     "theme": {
         "color": "#121212"
+    }, handler: function (response) {
+      console.log("Payment successful:", response);
+      console.log("Hi line no 75")
+      onNext();
+    },modal: {
+      ondismiss: function () {
+        console.log("Razorpay popup dismissed.");
+      }
     }
      }
  
      const paymentObject = new window.Razorpay(options  ,token);
 
   paymentObject.open();
+  paymentObject.on('payment.failed', function (response){
+    console.log("Payment failed:", response.error.description) 
+    alert("Payment Failed: " + response.error.description);
+         
+  })
 
    } catch (error) {
      console.log(error);
