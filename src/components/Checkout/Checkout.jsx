@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useContext,useEffect, useState } from 'react';
+import { CartContext } from 'pages/_app';
+import { useRouter } from 'next/router'
 import { CheckoutOrders } from './CheckoutOrder/CheckoutOrders';
 import { CheckoutStep1 } from './CheckoutSteps/CheckoutStep1';
 import { CheckoutStep2 } from './CheckoutSteps/CheckoutStep2';
@@ -24,6 +26,8 @@ const detailBlocks = [
 
 export const Checkout = () => {
   
+  const router = useRouter()
+  const { cart} = useContext(CartContext);  
   const [activeStep, setActiveStep] = useState(1);
 
   const handleNext = () => {
@@ -32,6 +36,11 @@ export const Checkout = () => {
   const handlePrev = () => {
     setActiveStep(activeStep - 1);
   };
+
+  useEffect(()=>{ 
+    if(!cart.length) router.push('/')},[cart]
+  )
+
   return (
     <>
       <div className='wrapper'>

@@ -4,11 +4,8 @@ import { useContext } from 'react';
 import { Card } from './Card/Card';
 
 export const CheckoutOrders = () => {
-  const { cart } = useContext(CartContext);
-  const total = cart.reduce(
-    (total, item) => total + Number(item.price) * Number(item.quantity),
-    0
-  );
+  const { cart, amount,total } = useContext(CartContext);
+
 
   return (
     <>
@@ -22,7 +19,7 @@ export const CheckoutOrders = () => {
         <div 
         className='cart-bottom__total-goods'>
           Goods on
-          <span>₹{total.toFixed(2)}</span>
+          <span>₹{(amount||total).toFixed(2)}</span>
         </div>
         {/* <div className='cart-bottom__total-promo'>
           Discount on promo code
@@ -37,7 +34,7 @@ export const CheckoutOrders = () => {
         </div>
         <div className='cart-bottom__total-num'>
           total:
-          <span>₹{(total + 30).toFixed(2)}</span>
+          <span>₹{((amount||total) + 30).toFixed(2)}</span>
         </div>
       </div>
     </>
