@@ -6,7 +6,7 @@ export const CheckoutStep2 = ({  onPrev, onNext }) => {
 
   const [payment, setPayment] = useState('credit-card');
 
-  const { cart } = useContext(CartContext)
+  const { cart, amount, total,clearCart } = useContext(CartContext)
 
 
   useEffect(() => {
@@ -24,76 +24,71 @@ export const CheckoutStep2 = ({  onPrev, onNext }) => {
   }, []); // Empty dependency array ensures it runs only once after mount
 
   
-   const paymentHandler = async()=>{
-
-     const products = cart.map(product => product._id);
-
-      console.log("rpduct" , products);
-
-     const token = localStorage.getItem("ecomm_userToken");
-
-   try {
+  const paymentHandler = async () => {
+    const products = cart.map((product) => product._id);
+    console.log("rpduct:", products);
+  
+    const token = localStorage.getItem("ecomm_userToken");
+    const price = (amount || total); 
+  
+    try {
      const response = await fetch("https://ecomm-backend-aopz.onrender.com/api/v1/payment/capturePayment",
        {
-         method: "POST",
-         headers: {
-           "content-type": "application/json",
-           Authorization: `Bearer ${token}`,
- 
-         },
-         body: JSON.stringify({products}),
-       }
-     );
-    
-
-     const formattedResponse = await response.json();
-
-     let amount = formattedResponse.message.amount/100;
-     
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ products, price }), // Send price along with products
+      });
   
-     const options = {
-      key:"rzp_test_eAwoqbEXBt3CVM", 
-    amount:amount, 
-    currency: "INR",
-    name: "Asit Mandal",
-    description: "product transaction",
-    order_id: formattedResponse?.message?.id,
+      const formattedResponse = await response.json();
+
+  
+      const options = {
+        key: "rzp_test_eAwoqbEXBt3CVM",
+        amount: ((price+30)*100) ,
+        currency: "INR",
+        name: "Asit Mandal",
+        description: "Product transaction",
+        order_id: formattedResponse?.message?.id,
     // callback_url: `https://ecomm-backend-aopz.onrender.com/api/v1/payment/verifySignature/${token}`,
-    prefill: {
+        prefill: {
         name: "login user name",
         email: "loginEmail.com",
         contact: "contactNumber" , 
-    },
+        },
     "notes": {
         "address": "Razorpay Corporate Office"
-    },
+        },
     "theme": {
         "color": "#121212"
     }, handler: function (response) {
-      console.log("Payment successful:", response);
-      console.log("Hi line no 75")
-      onNext();
-    },modal: {
-      ondismiss: function () {
-        console.log("Razorpay popup dismissed.");
-      }
+          console.log("Payment successful:", Object.keys(response));
+          localStorage.removeItem("Coupon");
+          clearCart(),
+          onNext(); // Move to next step after payment success
+        },
+        modal: {
+          ondismiss: function () {
+            console.log("Razorpay popup dismissed.");
+          },
+        },
+      };
+  
+      const paymentObject = new window.Razorpay(options);
+      paymentObject.open();
+  
+      paymentObject.on('payment.failed', function (response) {
+        console.log("Payment failed:", response.error.description);
+        alert("Payment Failed: " + response.error.description);
+      });
+  
+    } catch (error) {
+      console.log("Error in paymentHandler:", error);
     }
-     }
- 
-     const paymentObject = new window.Razorpay(options  ,token);
-
-  paymentObject.open();
-  paymentObject.on('payment.failed', function (response){
-    console.log("Payment failed:", response.error.description) 
-    alert("Payment Failed: " + response.error.description);
-         
-  })
-
-   } catch (error) {
-     console.log(error);
-   }
- 
-   }
+  };
+  
 
   return (
     <>

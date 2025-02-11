@@ -3,20 +3,28 @@ import socialData from 'data/social';
 import { CartContext } from 'pages/_app';
 import { useContext, useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 export const Cart = () => {
-
-  const { cart } = useContext(CartContext);
-
+  const router = useRouter();
+  const { cart, cupons, total, amount, setAmount, applyCoupon } = useContext(CartContext);
 
   const [count, setCount] = useState(0);
-
+  
   const socialLinks = [...socialData];
+  const [inputValue, setInputValue] = useState('');
+  const [selectedCoupon, setSelectedCoupon] = useState(null);
 
-  const total = cart.reduce(
-    (total, item) => total + Number(item.price) * Number(item.quantity),
-    0
-  );
+  // Handle coupon selection
+  const handleCouponSelection = (event) => {
+    const coupon = cupons.find(cupon => cupon._id === event.target.value);
+    if (coupon) {
+      applyCoupon(coupon._id);
+    }
+    setInputValue(coupon ? coupon.title : '');
+    setAmount(total);
+    setSelectedCoupon(coupon || null);
+  };
 
   const handleProductQuantity =async (change, quantity, id) => {
 
@@ -58,6 +66,18 @@ export const Cart = () => {
     }
   };
 
+  useEffect(() => {
+    const savedCoupon = JSON.parse(localStorage.getItem("Coupon"));
+
+    if (savedCoupon) {
+      setAmount(savedCoupon.cartTotal);
+      setInputValue('');
+      setSelectedCoupon(savedCoupon.coupon);
+      console.log("Using saved coupon amount:", savedCoupon.cartTotal);
+    }
+
+    if (cart.length <= 0) localStorage.removeItem("Coupon");
+  }, [cart]);
 
   return (
     <>
@@ -90,23 +110,29 @@ export const Cart = () => {
               <form className='cart-bottom__promo-form'>
                 <div className='box-field__row'>
                   <div className='box-field'>
-                    <input
-                      type='text'
-                      className='form-control'
-                      placeholder='Enter promo code'
-                    />
+                    <select
+                      style={{ width: '100%', height: '60px', padding: '20px', fontSize: '14px' }}
+                      onChange={handleCouponSelection}
+                    >
+                      <option value="">Select a coupon</option>
+                      {cupons?.map((cupon) => (
+                        <option key={cupon._id} className='form-control' value={cupon._id}>
+                          {cupon.title}
+                        </option>
+                      ))}
+                    </select>
                   </div>
-                  <button type='submit' className='btn btn-grey'>
-                    apply code
+                  <button
+                    type='button'
+                    className='btn btn-grey'
+                  >
+                    {'View code'}
                   </button>
                 </div>
               </form>
               <h6>How to get a promo code?</h6>
               <p>
-                Follow our news on the website, as well as subscribe to our
-                social networks. So you will not only be able to receive
-                up-to-date codes, but also learn about new products and
-                promotional items.
+                Follow our news on the website, as well as subscribe to our social networks. So you will not only be able to receive up-to-date codes but also learn about new products and promotional items.
               </p>
               <div className='contacts-info__social'>
                 <span>Find us here:</span>
@@ -124,19 +150,32 @@ export const Cart = () => {
             <div className='cart-bottom__total'>
               <div className='cart-bottom__total-goods'>
                 Goods on
-                <span>{total.toFixed(2)}</span>
+                <span>{total?.toFixed(2)}</span>
               </div>
               <div className='cart-bottom__total-promo'>
                 Discount on promo code
-                <span>No</span>
+                <span>{selectedCoupon ? `- ${selectedCoupon.discount}%` : "no"}</span>
               </div>
               <div className='cart-bottom__total-num'>
                 total:
-                <span>{total.toFixed(2)}</span>
+                <span>{amount?.toFixed(2) || total?.toFixed(2)}</span>
               </div>
-              <Link href='/checkout'>
-                <a className='btn'>Checkout</a>
-              </Link>
+              {cart.length > 0 ? (
+                <Link href="/checkout">
+                  <a className="btn">Checkout</a>
+                </Link>
+              ) : (
+                <button
+                  onClick={() => {
+                    alert('No items in the cart to proceed with checkout.');
+                    console.log("Clicked Checkout with an empty cart");
+                  }}
+                  className="btn"
+                  
+                >
+                  Checkout
+                </button>
+              )}
             </div>
           </div>
         </div>
