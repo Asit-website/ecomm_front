@@ -6,7 +6,7 @@ export const CheckoutStep2 = ({  onPrev, onNext }) => {
 
   const [payment, setPayment] = useState('credit-card');
 
-  const { cart, amount, total,clearCart } = useContext(CartContext)
+  const { cart, amount, total, clearCart, createOrder } = useContext(CartContext)
 
 
   useEffect(() => {
@@ -66,6 +66,7 @@ export const CheckoutStep2 = ({  onPrev, onNext }) => {
     }, handler: function (response) {
           console.log("Payment successful:", Object.keys(response));
           localStorage.removeItem("Coupon");
+          createOrder(),
           clearCart(),
           onNext(); // Move to next step after payment success
         },
@@ -210,7 +211,7 @@ export const CheckoutStep2 = ({  onPrev, onNext }) => {
                   placeholder='yy'
                   maxlength='2'
                 />
-              </div>
+              </div>  
               <div className='box-field'>
                 <span>Security code</span>
                 <input

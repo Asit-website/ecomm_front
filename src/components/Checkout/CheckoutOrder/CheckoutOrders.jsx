@@ -1,7 +1,8 @@
 import productData from 'data/product/product';
 import { CartContext } from 'pages/_app';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { Card } from './Card/Card';
+// import { useEffect } from 'react';
 
 export const CheckoutOrders = () => {
   const { cart, amount,total } = useContext(CartContext);
@@ -34,7 +35,7 @@ export const CheckoutOrders = () => {
         </div>
         <div className='cart-bottom__total-num'>
           total:
-          <span>₹{((amount||total) + 30).toFixed(2)}</span>
+          <span>₹{((amount||total)+30).toFixed(2)}</span>
         </div>
       </div>
     </>

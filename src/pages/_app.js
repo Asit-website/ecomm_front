@@ -76,6 +76,8 @@ const MyApp = ({ Component, pageProps }) => {
 
   // Fetch all cupons
   const fetchAllCupons = async () => {
+    const token = localStorage.getItem("ecomm_userToken");
+
     try {
       const response = await fetch(
         "https://ecomm-backend-aopz.onrender.com/api/v1/getCupons",
@@ -83,6 +85,7 @@ const MyApp = ({ Component, pageProps }) => {
           method: "GET",
           headers: {
             "content-type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -95,6 +98,7 @@ const MyApp = ({ Component, pageProps }) => {
 
   // Apply coupon
   const applyCoupon = async (couponId) => {
+    const token = localStorage.getItem("ecomm_userToken");
     try {
       const user = JSON.parse(localStorage.getItem("ecomm_user"));
       if (!user || !user._id) {
@@ -107,6 +111,7 @@ const MyApp = ({ Component, pageProps }) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           userId: userId,
@@ -160,6 +165,23 @@ const MyApp = ({ Component, pageProps }) => {
     }
   }
 
+  const createOrder = async () => {
+    const products = cart.map((product) => product._id);
+
+    try {
+      const response = await fetch("https://ecomm-backend-aopz.onrender.com/api/v1/orders/add-order",{
+        method: "POST",
+        headers: {
+          "content-type": "application/json", Authorization: `Bearer ${token}`,
+        },
+        body:JSON.stringify({userId:userDetails._id,products:products,totalAmount:amount,"shippingAddress":"kaila dehat"})
+      })
+      const data = await response.json();
+    } catch (error) {
+      console.log("Order not created ")
+    }
+  }
+
   useEffect(() => {
     if (localStorage.getItem("ecomm_userToken")) {
       setToken(localStorage.getItem("ecomm_userToken"));
@@ -180,7 +202,7 @@ const MyApp = ({ Component, pageProps }) => {
     <>
       <CartContext.Provider
         value={{
-          cart, setCart, cupons, token, setAmount, clearCart, userDetails, total, amount, setToken, setUserDetails, wishlist, fetchAllCartItem, fetchAllWishlistItem, applyCoupon,
+          cart, setCart, cupons, token, setAmount, clearCart, userDetails, total, amount, setToken, setUserDetails, wishlist, fetchAllCartItem, fetchAllWishlistItem,createOrder, applyCoupon,
         }}
       >
         <Component {...pageProps} />
