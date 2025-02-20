@@ -1,8 +1,9 @@
 "use client"
 import { ProductsCarousel } from 'components/Product/Products/ProductsCarousel';
 import { useRouter } from 'next/router';
-import {  useEffect, useState } from 'react';
+import {  useContext, useEffect, useState } from 'react';
 import { PublicLayout } from 'layout/PublicLayout';
+import { CartContext } from 'pages/_app';
 
 const breadcrumbsData = [
   {
@@ -19,7 +20,9 @@ const breadcrumbsData = [
 const CategoryProduct = () => {
 
     const router = useRouter();
-    const { id } = router.query;
+  const {  token } =useContext(CartContext); 
+  
+  const { id } = router.query;
 
     const [products , setProducts] = useState(null);
 

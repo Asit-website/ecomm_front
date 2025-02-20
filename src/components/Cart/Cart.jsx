@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 
 export const Cart = () => {
   const router = useRouter();
-  const { cart, cupons, total, amount, setAmount, applyCoupon } = useContext(CartContext);
+  const { cart, cupons, total, amount, setAmount, applyCoupon , token } = useContext(CartContext);
 
   const [count, setCount] = useState(0);
   
@@ -15,7 +15,6 @@ export const Cart = () => {
   const [inputValue, setInputValue] = useState('');
   const [selectedCoupon, setSelectedCoupon] = useState(null);
 
-  // Handle coupon selection
   const handleCouponSelection = (event) => {
     const coupon = cupons.find(cupon => cupon._id === event.target.value);
     if (coupon) {
@@ -161,9 +160,16 @@ export const Cart = () => {
                 <span>{amount?.toFixed(2) || total?.toFixed(2)}</span>
               </div>
               {cart.length > 0 ? (
-                <Link href="/checkout">
-                  <a className="btn">Checkout</a>
-                </Link>
+               
+                  <a onClick={()=>{
+                    if(token){
+                      router.push("/checkout");
+                    }
+                    else{
+                       router.push("/login");
+                    }
+                  }} className="btn cursor-pointer">Checkout</a>
+              
               ) : (
                 <button
                   onClick={() => {

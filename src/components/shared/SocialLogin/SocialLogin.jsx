@@ -5,8 +5,7 @@ import router from "next/router";
 import { CartContext } from "pages/_app";
 
 export const SocialLogin = () => {
-  const { setToken, setUserDetails, fetchAllCartItem, fetchAllWishlistItem } =
-    useContext(CartContext);
+  const { setToken, setUserDetails, fetchAllCartItem, fetchAllWishlistItem } =useContext(CartContext);
 
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);

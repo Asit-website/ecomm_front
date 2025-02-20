@@ -15,6 +15,9 @@ const MyApp = ({ Component, pageProps }) => {
   const [wishlist, setWishlist] = useState([]);
   const [amount, setAmount] = useState();
 
+
+  console.log("token" , token); 
+
   // Fetch all cart items
   const fetchAllCartItem = async () => {
 
@@ -43,7 +46,8 @@ const MyApp = ({ Component, pageProps }) => {
         console.log(error);
       }
     } else {
-      setCart([]);
+      let cartItems = JSON.parse(sessionStorage.getItem("cart_items")) || [];
+       setCart([...cartItems]);
     }
   };
 

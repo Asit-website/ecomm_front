@@ -11,39 +11,50 @@ export const Card = ({ cart, onChangeQuantity }) => {
     quantity,
   } = cart;
 
-  const {  fetchAllCartItem  } = useContext(CartContext); 
+  const {  fetchAllCartItem  , setCart } = useContext(CartContext); 
 
 
   const removeFromCart = async()=>{
     const token = localStorage.getItem("ecomm_userToken");
 
-    try{
+    if(token){
+      try{
 
-      const response = await fetch(`https://ecomm-backend-aopz.onrender.com/api/v1/removeFromCart/${_id}`,
-      {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-          Authorization: `Bearer ${token}`,
-
-        },
+        const response = await fetch(`https://ecomm-backend-aopz.onrender.com/api/v1/removeFromCart/${_id}`,
+        {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+            Authorization: `Bearer ${token}`,
+  
+          },
+        }
+  
+      );
+  
+       const data = await response.json();
+  
+         if(data?.success){
+          alert("Successfuly remove");
+          fetchAllCartItem();
+         }
+         else{
+          alert(data?.message);
+         }
+  
+      } catch(error){
+        console.log(error);
+        alert("Internal server error , please try again")
       }
+    }
+    else{
+      let cartItems = JSON.parse(sessionStorage.getItem("cart_items")) || [];
 
-    );
+  const updatedCart = cartItems.filter(item => item._id !== _id);
 
-     const data = await response.json();
-
-       if(data?.success){
-        alert("Successfuly remove");
-        fetchAllCartItem();
-       }
-       else{
-        alert(data?.message);
-       }
-
-    } catch(error){
-      console.log(error);
-      alert("Internal server error , please try again")
+  sessionStorage.setItem("cart_items", JSON.stringify(updatedCart));
+setCart([...updatedCart]);
+  alert("Item removed from cart");
     }
   }
 

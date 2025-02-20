@@ -34,7 +34,7 @@ export const SingleProduct = ({
               <button
                 disabled={addedInCart}
                 className={`addList ${addedInCart ? 'added' : ''}`}
-                onClick={() => onAddToCart(_id)}
+                onClick={() => onAddToCart(_id , product)}
               >
                 <i className='icon-cart'></i>
               </button>

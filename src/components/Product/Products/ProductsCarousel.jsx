@@ -10,35 +10,58 @@ import { SingleProduct } from './SingleProduct/SingleProduct';
 
 export const ProductsCarousel = ({ products }) => {
 
-  const { cart ,wishlist , token , fetchAllCartItem , fetchAllWishlistItem } = useContext(CartContext); 
+  const { cart ,wishlist , token , fetchAllCartItem , fetchAllWishlistItem , setCart } = useContext(CartContext); 
 
-  const handleAddToCart = async(id) => {
+  const handleAddToCart = async(id , product) => {
 
-    try {
-      const response = await fetch(
-        `https://ecomm-backend-aopz.onrender.com/api/v1/addToCart/${id}`,
-        {
-          method: "POST",
-          headers: {
-            "content-type": "application/json",
-            Authorization: `Bearer ${token}`,
+    if(token){
+      try {
+        const response = await fetch(
+          `https://ecomm-backend-aopz.onrender.com/api/v1/addToCart/${id}`,
+          {
+            method: "POST",
+            headers: {
+              "content-type": "application/json",
+              Authorization: `Bearer ${token}`,
+  
+            },
+          }
+        );
+  
+        const formattedResponse = await response.json();
+  
+  
+         if(formattedResponse.success){
+          alert("successfuly added to cart");
+  
+          fetchAllCartItem();
+         }
+        
+  
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    else{
 
-          },
-        }
-      );
+    let cartItems = JSON.parse(sessionStorage.getItem("cart_items")) || [];
 
-      const formattedResponse = await response.json();
+    const isAlreadyInCart = cartItems.some(
+      (item) => item?._id === product?._id
+    );
 
+    if (isAlreadyInCart) {
+      return alert("Already added to cart");
+    }
 
-       if(formattedResponse.success){
-        alert("successfuly added to cart");
+    cartItems.push(product);
+    sessionStorage.setItem("cart_items", JSON.stringify(cartItems));
+    
+    
+    setCart([...cart , product])
 
-        fetchAllCartItem();
-       }
-      
+    alert("Successfully added to cart");
 
-    } catch (error) {
-      console.log(error);
     }
 
   };
